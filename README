@@ -1,0 +1,52 @@
+This README file contains information on the contents of the meta-y2038 layer.
+
+Please see the corresponding sections below for details.
+
+Dependencies
+============
+
+	meta-openembedded
+
+Patches
+=======
+
+Please submit any patches against the meta-y2038 layer to github.com/lmajewski
+repo for this project and cc: the maintainer:
+
+Maintainer: Lukasz Majewski <lukma@denx.de>
+
+Table of Contents
+=================
+
+  I. Adding the meta-y2038 layer to your build
+ II. Misc
+
+
+I. Adding the meta-y2038 layer to your build
+=================================================
+
+Run 'bitbake-layers add-layer meta-y2038'
+
+II. Misc
+========
+
+Build Configuration:
+BB_VERSION           = "1.40.0"
+BUILD_SYS            = "x86_64-linux"
+NATIVELSBSTRING      = "universal"
+TARGET_SYS           = "arm-poky-linux-gnueabi"
+MACHINE              = "y2038arm"
+DISTRO               = "poky"
+DISTRO_VERSION       = "2.6.1"
+TUNE_FEATURES        = "arm armv7a vfp thumb neon callconvention-hard"
+TARGET_FPU           = "hard"
+meta
+meta-poky
+meta-yocto-bsp       = "thud:ee7dd3194411695e659c0c5cfbe2d938764dcc78"
+meta-oe
+meta-networking
+meta-python
+meta-filesystems
+meta-perl            = "thud:cca27b5ea7569d2730ee5da7ee7f47b39d775d89"
+
+(Please pay attention to thud:SHAs)
