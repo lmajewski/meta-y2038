@@ -33,14 +33,17 @@ do_compile () {
 	oe_runmake
 }
 
+# Remove -Wformat-security checking as it causes 'make check' to fail
+# due to manual addition of -Wno-format to disable 'format-security'
+# checking for some tests (and defined earlier -Wformat-security causes
+# error
+
+MAKE_CHECK_EXCLUDE = "\
+'CC=${@'${CC}'.replace('-Wformat-security -Werror=format-security', '')}' \
+'CXX=${@'${CXX}'.replace('-Wformat-security -Werror=format-security', '')}' \
+"
 do_make_check () {
-	cd ${B}
-	# Remove -Wformat-security checking as it causes 'make check' to fail
-	# due to manual addition of -Wno-format to disable 'format-security'
-	# checking for some tests (and defined earlier -Wformat-security causes
-	# error
-	oe_runmake check CC="${@'${CC}'.replace('-Wformat-security -Werror=format-security', '')}" \
-		   CXX="${@'${CXX}'.replace('-Wformat-security -Werror=format-security', '')}"
+	cd ${B} && oe_runmake check ${MAKE_CHECK_EXCLUDE}
 }
 
 do_make_check[doc] = "Run glibc's tests"
