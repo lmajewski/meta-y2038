@@ -26,4 +26,5 @@ RDEPENDS_${PN}-devel = "\
 	ntpdate \
 	iperf3 \
 	netcat \
+	y2038-tests \
 "
