@@ -46,4 +46,7 @@ do_make_check () {
 do_make_check[doc] = "Run glibc's tests"
 addtask do_make_check after do_compile
 
-do_install[noexec] = "1"
+SYSROOT_DIRS_append = "${Y2038_GLIBC_DEPLOY_DIR}"
+do_install () {
+	oe_runmake install DESTDIR=${D}${Y2038_GLIBC_DEPLOY_DIR}
+}
