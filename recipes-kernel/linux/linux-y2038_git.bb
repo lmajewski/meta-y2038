@@ -29,3 +29,17 @@ SRCREV ="48166e6ea47d23984f0b481ca199250e1ce0730a"
 # Below features must be removed when we do not use kernel-yocto
 KERNEL_FEATURES_remove_qemuall="features/debug/printk.scc \
 				features/kernel-sample/kernel-sample.scc"
+
+SYSROOT_DIRS_append = " ${Y2038_GLIBC_DEPLOY_DIR}"
+SYSROOT_DIRS_remove = " ${base_libdir} ${nonarch_base_libdir}"
+do_install_append () {
+	oe_runmake headers_install INSTALL_HDR_PATH=${D}${Y2038_GLIBC_DEPLOY_DIR}
+}
+
+# We need to re-define this function as kernel.bbclass makes it an empty one
+# to avoid clash with linux-firmware
+sysroot_stage_all() {
+	sysroot_stage_dirs ${D} ${SYSROOT_DESTDIR}
+}
+
+FILES_${KERNEL_PACKAGE_NAME}-base += "${Y2038_GLIBC_DEPLOY_DIR}/*"
