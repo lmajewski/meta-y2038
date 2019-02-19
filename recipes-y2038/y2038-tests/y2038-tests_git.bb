@@ -10,7 +10,7 @@ SRC_URI = "git://github.com/lmajewski/y2038tests.git;protocol=https"
 
 # Modify these as desired
 PV = "1.0+git${SRCPV}"
-SRCREV = "55a43c5ee4cefccacd91d8984eb90eaac3d8b714"
+SRCREV = "ba5fae066ee6173817930b06d13127620090367d"
 
 S = "${WORKDIR}/git"
 
