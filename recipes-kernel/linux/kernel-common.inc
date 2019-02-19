@@ -39,6 +39,8 @@ FILES_${KERNEL_PACKAGE_NAME}-base += "${Y2038_GLIBC_DEPLOY_DIR}/*"
 # this is the best way to achieve this goal.
 #
 
+KMACHINE_qemux86-64-x32 = "qemux86-64"
+
 KMETA = "kernel-meta"
 KTYPE = "standard"
 META_REPO = "git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=${KMETA_BRANCH};destsuffix=${KMETA}"
