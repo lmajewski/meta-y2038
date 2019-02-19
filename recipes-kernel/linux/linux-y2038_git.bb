@@ -18,8 +18,8 @@ PV = "${LINUX_VERSION}+git${SRCPV}"
 
 BRANCH = "y2038"
 SRC_URI = "git://git.kernel.org/pub/scm/linux/kernel/git/arnd/playground.git;branch=${BRANCH}"
-SRC_URI += "file://defconfig"
-SRC_URI += "file://qemu_vexpress_tune.cfg file://virtio.cfg file://printk.cfg"
+SRC_URI_append_y2038arm = " file://defconfig file://qemu_vexpress_tune.cfg"
+SRC_URI_append = " file://virtio.cfg file://printk.cfg"
 
 LINUX_VERSION = "5.0"
 LINUX_VERSION_EXTENSION = "-y2038-${SRCREV}"
