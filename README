@@ -5,7 +5,7 @@ Please see the corresponding sections below for details.
 Dependencies
 ============
 
-	meta-openembedded
+	meta-openembedded:
 
 Patches
 =======
@@ -19,7 +19,8 @@ Table of Contents
 =================
 
   I. Adding the meta-y2038 layer to your build
- II. Misc
+ II. Build setup (meta-* SHAs)
+III. Y2038 development
 
 
 I. Adding the meta-y2038 layer to your build
@@ -27,8 +28,13 @@ I. Adding the meta-y2038 layer to your build
 
 Run 'bitbake-layers add-layer meta-y2038'
 
-II. Misc
-========
+II. Build setup
+===============
+
+The KAS project [https://github.com/siemens/kas] shall be used to deploy the
+meta-y2038 with proper SHAs.
+
+or one can do it manually.
 
 Build Configuration:
 BB_VERSION           = "1.40.0"
@@ -50,3 +56,13 @@ meta-filesystems
 meta-perl            = "thud:cca27b5ea7569d2730ee5da7ee7f47b39d775d89"
 
 (Please pay attention to thud:SHAs)
+
+III. Y2038 development
+======================
+
+bitbake y2038-image-devel && runqemu -d y2038-image-devel
+
+Then from prompt:
+root@y2038arm:~# test_y2038
+
+Available MACHINES: y2038arm, qemux86, qemux86_64
