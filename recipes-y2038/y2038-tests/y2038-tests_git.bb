@@ -26,7 +26,11 @@ CFLAGS_append = " \
 	-I${STAGING_DIR_HOST}${Y2038_GLIBC_DEPLOY_DIR}/include"
 
 LDFLAGS_append = "\
-	--sysroot=${STAGING_DIR_HOST}${Y2038_GLIBC_DEPLOY_DIR}"
+	--sysroot=${STAGING_DIR_HOST}${Y2038_GLIBC_DEPLOY_DIR} \
+	-Wl,-rpath=${Y2038_GLIBC_DEPLOY_DIR}${base_libdir}"
+
+# It is also possible to setup the dynamic linker path during build
+#-Wl,--dynamic-linker=${Y2038_GLIBC_DEPLOY_DIR}${base_libdir}/ld-linux-armhf.so.3
 
 do_compile () {
 	oe_runmake
