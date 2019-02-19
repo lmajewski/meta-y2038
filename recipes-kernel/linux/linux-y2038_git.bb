@@ -30,6 +30,9 @@ SRCREV ="48166e6ea47d23984f0b481ca199250e1ce0730a"
 KERNEL_FEATURES_remove_qemuall="features/debug/printk.scc \
 				features/kernel-sample/kernel-sample.scc"
 
+# Use in-tree defconfig
+KBUILD_DEFCONFIG_qemux86 = "i386_defconfig"
+
 SYSROOT_DIRS_append = " ${Y2038_GLIBC_DEPLOY_DIR}"
 SYSROOT_DIRS_remove = " ${base_libdir} ${nonarch_base_libdir}"
 do_install_append () {
