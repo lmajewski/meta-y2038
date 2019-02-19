@@ -64,3 +64,6 @@ FILES_${PN} += "${Y2038_GLIBC_DEPLOY_DIR}/*"
 # some QA checks need to be disabled to allow smooth installation
 # in the /opt directory (to avoid clash with original glibc)
 INSANE_SKIP_${PN} += "dev-so staticdev"
+
+# Do not strip the resultings libc.*.so
+INHIBIT_PACKAGE_STRIP = "1"
