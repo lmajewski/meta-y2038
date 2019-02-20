@@ -32,6 +32,7 @@ KERNEL_FEATURES_remove_qemuall="features/debug/printk.scc \
 
 # Use in-tree defconfig
 KBUILD_DEFCONFIG_qemux86 = "i386_defconfig"
+KBUILD_DEFCONFIG_qemux86-64 = "x86_64_defconfig"
 
 SYSROOT_DIRS_append = " ${Y2038_GLIBC_DEPLOY_DIR}"
 SYSROOT_DIRS_remove = " ${base_libdir} ${nonarch_base_libdir}"
