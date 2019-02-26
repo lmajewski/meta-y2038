@@ -24,6 +24,7 @@ CFLAGS_append = " \
 	--sysroot=${STAGING_DIR_HOST}${Y2038_GLIBC_DEPLOY_DIR} \
 	-isystem=${STAGING_DIR_HOST}${Y2038_GLIBC_DEPLOY_DIR}${includedir} \
 	-I${STAGING_DIR_HOST}${Y2038_GLIBC_DEPLOY_DIR}/include"
+CFLAGS_append = " -ggdb"
 
 LDFLAGS_append = "\
 	--sysroot=${STAGING_DIR_HOST}${Y2038_GLIBC_DEPLOY_DIR} \
@@ -36,11 +37,19 @@ do_compile () {
 	oe_runmake
 }
 
+inherit autotools-brokensep package
+
 FILES_${PN} += "${bindir}"
+FILES_${PN}-dbg += "${exec_prefix}/src/debug"
+
 do_install () {
 	install -d ${D}${bindir}
 	install -m 0755 test_y2038 ${D}${bindir}
 	install -m 0755 test_n2038 ${D}${bindir}
+
+	install -d ${D}${exec_prefix}/src/debug/${PN}/${PV}
+	install -m 0644 ${S}/*.c ${D}${exec_prefix}/src/debug/${PN}/${PV}
+	install -m 0644 ${S}/*.h ${D}${exec_prefix}/src/debug/${PN}/${PV}
 }
 
 do_prepare_recipe_sysroot_fix[doc] = "\
