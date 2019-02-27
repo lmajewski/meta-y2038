@@ -57,6 +57,16 @@ do_install () {
 	# Remove /opt/usr/bin as we do not need glibc scripts to be installed
 	# on the target rootfs (for glibc development)
 	rm -rf ${D}${Y2038_GLIBC_DEPLOY_DIR}${bindir}/*
+
+	# Install the source code
+	install -d ${D}${Y2038_GLIBC_DEPLOY_DIR}/usr/src/debug/${PN}/${PV}
+	cp -R --no-dereference --preserve=mode,links -v ${S}/* \
+	   ${D}${Y2038_GLIBC_DEPLOY_DIR}/usr/src/debug/${PN}/${PV}
+
+	# Remove symlinks created in workdir
+	rm -rf \
+	   ${D}${Y2038_GLIBC_DEPLOY_DIR}/usr/src/debug/${PN}/${PV}/oe-workdir \
+	   ${D}${Y2038_GLIBC_DEPLOY_DIR}/usr/src/debug/${PN}/${PV}/oe-logs
 }
 
 FILES_${PN} += "${Y2038_GLIBC_DEPLOY_DIR}/*"
