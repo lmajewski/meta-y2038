@@ -12,7 +12,7 @@ IMAGE_INSTALL += " \
 "
 
 # Provide extra 64 MiB
-IMAGE_ROOTFS_EXTRA_SPACE="65536"
+IMAGE_ROOTFS_EXTRA_SPACE="1048576"
 
 DISTRO_FEATURES_DEFAULT_remove = "bluetooth \
 				  irda pcmcia \
