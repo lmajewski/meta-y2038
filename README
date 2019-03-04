@@ -32,7 +32,8 @@ II. Build setup
 ===============
 
 The KAS project [https://github.com/siemens/kas] shall be used to deploy the
-meta-y2038 with proper SHAs.
+meta-y2038 with proper SHAs. Please use the "pasted" below meta-y2038-kas.yml
+file.
 
 or one can do it manually.
 
@@ -66,3 +67,43 @@ Then from prompt:
 root@y2038arm:~# test_y2038
 
 Available MACHINES: y2038arm, qemux86, qemux86_64
+
+
+
+Appendix I.
+===========
+
+meta-y2038-kas.yml
+
+----->8-------
+header:
+  version: 1
+
+machine: "y2038arm"
+
+distro: "y2038"
+target: "arm-poky-linux-gnueabi"
+repos:
+
+  poky:
+      url: "git://git.yoctoproject.org/poky.git"
+      refspec : ee7dd3194411695e659c0c5cfbe2d938764dcc78
+      layers:
+      meta:
+      meta-poky:
+      meta-yocto-bsp:
+
+  meta-openembedded:
+      url : "git://git.openembedded.org/meta-openembedded"
+      refspec : cca27b5ea7569d2730ee5da7ee7f47b39d775d89
+      layers:
+      meta-oe:
+      meta-networking:
+      meta-python:
+      meta-webserver:
+      meta-perl:
+
+  meta-y2038 :
+      url : "https://github.com/lmajewski/meta-y2038.git"
+      refspec : bd8cd0fc9d805a563ab7d73dbb0c274e878a7812
+-----8<-------
