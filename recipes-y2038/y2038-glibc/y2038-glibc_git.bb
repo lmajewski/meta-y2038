@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = "file://LICENSES;md5=cfc0ed77a9f62fa62eded042ebe31d72 \
 
 DEPENDS = "linux-y2038 bison-native"
 
-BRANCH = "Y2038-2.29-glibc-08-02-2019"
+BRANCH = "Y2038-2.29-glibc-11-03-2019"
 SRC_URI = "git://github.com/lmajewski/y2038_glibc.git;protocol=https;branch=${BRANCH}"
 
 # Modify these as desired
