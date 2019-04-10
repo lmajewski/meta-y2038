@@ -4,7 +4,7 @@ LIC_FILES_CHKSUM = "file://LICENSES;md5=cfc0ed77a9f62fa62eded042ebe31d72 \
 		    file://posix/rxspencer/COPYRIGHT;md5=dc5485bb394a13b2332ec1c785f5d83a \
 		    file://COPYING.LIB;md5=4fbd65380cdd255951079008b364516c"
 
-DEPENDS = "linux-y2038 bison-native"
+DEPENDS = "virtual/kernel bison-native"
 
 BRANCH = "Y2038-2.29-glibc-11-03-2019"
 SRC_URI = "git://github.com/lmajewski/y2038_glibc.git;protocol=https;branch=${BRANCH}"
