@@ -16,7 +16,7 @@ SRCREV = "c0f0d3aeacf01075dde674256f049aa0124842c7"
 S = "${WORKDIR}/git"
 B = "${WORKDIR}/build"
 
-PARALLEL_MAKE = "-j 8"
+PARALLEL_MAKE = "-j 14"
 # In /usr/include we shall have headers installed from linux-y2038
 EXTRA_OECONF = "\
 	--with-headers=${STAGING_DIR_HOST}${Y2038_GLIBC_DEPLOY_DIR}/include \
