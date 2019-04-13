@@ -28,7 +28,7 @@ sysroot_stage_all() {
 FILES_${KERNEL_PACKAGE_NAME}-base += "${Y2038_GLIBC_DEPLOY_DIR}/*"
 
 #############################
-# QEMU x86 specific code
+# QEMU x86(_64) specific code
 #
 #############################
 
@@ -39,13 +39,15 @@ FILES_${KERNEL_PACKAGE_NAME}-base += "${Y2038_GLIBC_DEPLOY_DIR}/*"
 # this is the best way to achieve this goal.
 #
 
-KMETA_qemux86 = "kernel-meta"
-KTYPE_qemux86 = "standard"
-KMACHINE_qemux86 = "qemux86"
-SRC_URI_append_qemux86 = " \                                                                                                                                                                                                                 
-      git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=${KMETA_BRANCH};destsuffix=${KMETA}"
+KMETA = "kernel-meta"
+KTYPE = "standard"
+META_REPO = "git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=${KMETA_BRANCH};destsuffix=${KMETA}"
+META_FEATURES = "cfg/virtio.scc cfg/sound.scc cfg/paravirt_kvm.scc"
 
-KERNEL_FEATURES_append_qemux86 =" cfg/virtio.scc"
-KERNEL_FEATURES_append_qemux86 =" cfg/sound.scc cfg/paravirt_kvm.scc"
+SRC_URI_append_qemux86 = " ${META_REPO}"
+SRC_URI_append_qemux86-64 = " ${META_REPO}"
 
-LINUX_VERSION_EXTENSION_qemux86 = "-yocto-qemux86-${SRCREV}"
+KERNEL_FEATURES_append_qemux86 = " ${META_FEATURES}"
+KERNEL_FEATURES_append_qemux86-64 = " ${META_FEATURES}"
+
+LINUX_VERSION_EXTENSION = "-yocto-${MACHINE}-${SRCREV}"
