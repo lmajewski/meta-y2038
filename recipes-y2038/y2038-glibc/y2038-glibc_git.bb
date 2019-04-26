@@ -20,6 +20,7 @@ PARALLEL_MAKE = "-j 14"
 # In /usr/include we shall have headers installed from linux-y2038
 EXTRA_OECONF = "\
 	--with-headers=${STAGING_DIR_HOST}${Y2038_GLIBC_DEPLOY_DIR}/include \
+        --enable-kernel=${Y2038_GLIBC_MIN_KERNEL_VERSION} \
 	--prefix=/usr \
 	--host=${TARGET_SYS} \
 	--build=${BUILD_SYS} \
