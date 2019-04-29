@@ -21,6 +21,7 @@ Table of Contents
   I. Adding the meta-y2038 layer to your build
  II. Build setup (meta-* SHAs)
 III. Y2038 development
+IV.  Using glibc/src/scripts/cross-test-ssh.sh
 
 
 I. Adding the meta-y2038 layer to your build
@@ -67,6 +68,32 @@ Then from prompt:
 root@y2038arm:~# test_y2038
 
 Available MACHINES: y2038arm, qemux86, qemux86_64
+
+
+IV. Using glibc/src/scripts/cross-test-ssh.sh with QEMU
+=======================================================
+
+MACHINE=y2038arm   (32 bit ARM - Vexpress-A9)
+
+From Yocto/OE setup environment (on which bitbake operates)
+-----------------------------------------------------------
+runqemu -d y2038arm nographic
+mkdir -p /opt/Y2038/glibc/; cd /opt/Y2038/glibc/
+sshfs -o allow_other -o sshfs_sync lukma@192.168.7.1:/opt/Y2038/glibc .   [1]
+cd .
+
+On HOST (x86_64):
+-----------------
+
+Setup yocto environment:
+$ . /opt/Y2038/2.6.1/environment-setup-armv7at2hf-neon-poky-linux-gnueabi
+
+cd /opt/Y2038/glibc/
+../src/configure --host="arm-poky-linux-gnueabi" --prefix=/usr
+
+make PARALLELMFLAGS="-j8"
+(For improved performance execute step [1] just before xcheck)
+make PARALLELMFLAGS="-j8" test-wrapper='/opt/Y2038/glibc/src/scripts/cross-test-ssh.sh root@192.168.7.2' xcheck
 
 
 
