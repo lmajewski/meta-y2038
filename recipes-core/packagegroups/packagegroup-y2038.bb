@@ -27,4 +27,7 @@ RDEPENDS_${PN}-devel = "\
 	iperf3 \
 	netcat \
 	y2038-tests-dbg \
+        git \
+        openssh-sftp-server \
+        sshfs-fuse \
 "
