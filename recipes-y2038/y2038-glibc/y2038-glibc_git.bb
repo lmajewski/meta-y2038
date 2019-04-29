@@ -45,7 +45,7 @@ MAKE_CHECK_EXCLUDE = "\
 'CXX=${@'${CXX}'.replace('-Wformat-security -Werror=format-security', '')}' \
 "
 do_make_check () {
-	cd ${B} && oe_runmake check ${MAKE_CHECK_EXCLUDE}
+	cd ${B} && oe_runmake check ${MAKE_CHECK_EXCLUDE} PARALLELMFLAGS="-j8"
 }
 
 do_make_check[doc] = "Run glibc's tests"
