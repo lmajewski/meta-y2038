@@ -22,7 +22,7 @@ Table of Contents
  II. Build setup (meta-* SHAs)
 III. Y2038 development
 IV.  Using glibc/src/scripts/cross-test-ssh.sh
-
+V.   Building glibc with yocto SDK
 
 I. Adding the meta-y2038 layer to your build
 =================================================
@@ -95,6 +95,11 @@ make PARALLELMFLAGS="-j8"
 (For improved performance execute step [1] just before xcheck)
 make PARALLELMFLAGS="-j8" test-wrapper='/opt/Y2038/glibc/src/scripts/cross-test-ssh.sh root@192.168.7.2' xcheck
 
+V. Building glibc with yocto SDK
+================================
+cd build/glibc
+../../y2038-glibc/configure --host="i586-poky-linux" --prefix=/usr
+make PARALLELMFLAGS="-j12" && make xcheck PARALLELMFLAGS="-j12"
 
 
 Appendix I.
