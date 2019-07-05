@@ -23,6 +23,7 @@ Table of Contents
 III. Y2038 development
 IV.  Using glibc/src/scripts/cross-test-ssh.sh
 V.   Building glibc with yocto SDK
+VI.  Build test glibc with x86, x86-64 and x32
 
 I. Adding the meta-y2038 layer to your build
 =================================================
@@ -101,6 +102,12 @@ cd build/glibc
 ../../y2038-glibc/configure --host="i586-poky-linux" --prefix=/usr
 make PARALLELMFLAGS="-j12" && make xcheck PARALLELMFLAGS="-j12"
 
+
+VI. Build test glibc with MACHINE=qemux86-64, qemux86, qemux86-64-x32
+=====================================================================
+MACHINE=qemux86-64-x32 bitbake y2038-glibc -c cleansstate && MACHINE=qemux86-64-x32 bitbake y2038-glibc -c compile -f
+MACHINE=qemux86-64 bitbake y2038-glibc -c cleansstate && MACHINE=qemux86-64 bitbake y2038-glibc -c compile -f
+MACHINE=qemux86 bitbake y2038-glibc -c cleansstate && MACHINE=qemux86 bitbake y2038-glibc -c compile -f
 
 Appendix I.
 ===========
