@@ -80,7 +80,7 @@ From Yocto/OE setup environment (on which bitbake operates)
 -----------------------------------------------------------
 runqemu -d y2038arm nographic
 mkdir -p /opt/Y2038/glibc/; cd /opt/Y2038/glibc/
-sshfs -o allow_other -o sshfs_sync lukma@192.168.7.1:/opt/Y2038/glibc .   [1]
+sshfs -o allow_other -o sshfs_sync lukma@192.168.7.1:/opt/Y2038/glibc/ .   [1]
 cd .
 
 On HOST (x86_64):
@@ -89,7 +89,7 @@ On HOST (x86_64):
 Setup yocto environment:
 $ . /opt/Y2038/2.6.1/environment-setup-armv7at2hf-neon-poky-linux-gnueabi
 
-cd /opt/Y2038/glibc/
+cd /opt/Y2038/glibc/build
 ../src/configure --host="arm-poky-linux-gnueabi" --prefix=/usr
 
 make PARALLELMFLAGS="-j8"
