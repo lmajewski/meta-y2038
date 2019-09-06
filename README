@@ -24,6 +24,7 @@ III. Y2038 development
 IV.  Using glibc/src/scripts/cross-test-ssh.sh
 V.   Building glibc with yocto SDK
 VI.  Build test glibc with x86, x86-64 and x32
+VII. GDB
 
 I. Adding the meta-y2038 layer to your build
 =================================================
@@ -108,6 +109,22 @@ VI. Build test glibc with MACHINE=qemux86-64, qemux86, qemux86-64-x32
 MACHINE=qemux86-64-x32 bitbake y2038-glibc -c cleansstate && MACHINE=qemux86-64-x32 bitbake y2038-glibc -c compile -f
 MACHINE=qemux86-64 bitbake y2038-glibc -c cleansstate && MACHINE=qemux86-64 bitbake y2038-glibc -c compile -f
 MACHINE=qemux86 bitbake y2038-glibc -c cleansstate && MACHINE=qemux86 bitbake y2038-glibc -c compile -f
+
+VII. GDB
+Session on test_y2038: __clock_settime64
+========================================
+
+gdb test_y2038
+
+(gdb) set directories /usr/src/debug/y2038-tests/1.0+git999:\
+	/opt/usr/src/debug/y2038-glibc/2.30+git999/sysdeps/unix/sysv/linux:\
+	/opt/usr/src/debug/y2038-glibc/2.30+git999/sysdeps/unix/sysv/linux/arm:\
+        /opt/usr/src/debug/y2038-glibc/2.30+git999/include
+
+(gdb) b test_clock_settime
+(gdb) run
+
+
 
 Appendix I.
 ===========
