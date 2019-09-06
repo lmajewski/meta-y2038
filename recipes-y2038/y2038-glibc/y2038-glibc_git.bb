@@ -10,7 +10,7 @@ BRANCH = "Y2038-2.29-glibc-11-03-2019"
 SRC_URI = "git://github.com/lmajewski/y2038_glibc.git;protocol=https;branch=${BRANCH}"
 
 # Modify these as desired
-PV = "2.29+git${SRCPV}"
+PV = "2.30+git${SRCPV}"
 SRCREV = "c0f0d3aeacf01075dde674256f049aa0124842c7"
 
 S = "${WORKDIR}/git"
