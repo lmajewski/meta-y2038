@@ -27,8 +27,13 @@ CFLAGS_append = " \
 CFLAGS_append = " -ggdb"
 
 LDFLAGS_append = "\
-	--sysroot=${STAGING_DIR_HOST}${Y2038_GLIBC_DEPLOY_DIR} \
 	-Wl,-rpath=${Y2038_GLIBC_DEPLOY_DIR}${base_libdir}"
+
+LDFLAGS_append_y2038arm = "\
+	--sysroot=${STAGING_DIR_HOST}${Y2038_GLIBC_DEPLOY_DIR}"
+
+LDFLAGS_append_qemux86 = "\
+	--sysroot=${STAGING_DIR_HOST}${Y2038_GLIBC_DEPLOY_DIR}"
 
 # It is also possible to setup the dynamic linker path during build
 #-Wl,--dynamic-linker=${Y2038_GLIBC_DEPLOY_DIR}${base_libdir}/ld-linux-armhf.so.3
@@ -52,17 +57,25 @@ do_install () {
 	install -m 0644 ${S}/*.h ${D}${exec_prefix}/src/debug/${PN}/${PV}
 }
 
-python do_prepare_recipe_sysroot_append () {
-# Copy toolchain files - like crtbeginS.o - to allow cross compilation
+def do_prepare_recipe_sysroot_32bit_fix(d):
+    # Copy toolchain files - like crtbeginS.o - to allow cross compilation
     cp_from = d.getVar('STAGING_DIR_HOST') + d.getVar('libdir') + "/" + d.getVar('TARGET_SYS')
     cp_to = d.getVar('STAGING_DIR_HOST') + d.getVar('Y2038_GLIBC_DEPLOY_DIR') + d.getVar('libdir')
     os.system("cp -a " + cp_from + " " + cp_to)
 
-# Copy the libgcc* as suggested in:
-# https://sourceware.org/glibc/wiki/Testing/Builds
-# 'Building glibc with intent to install'
+    # Copy the libgcc* as suggested in:
+    # https://sourceware.org/glibc/wiki/Testing/Builds
+    # 'Building glibc with intent to install'
     cp_from = d.getVar('STAGING_DIR_HOST') + d.getVar('base_libdir') + "/libgcc*"
     cp_to = d.getVar('STAGING_DIR_HOST') + d.getVar('Y2038_GLIBC_DEPLOY_DIR') + d.getVar('base_libdir')
     os.system("cp -a " + cp_from + " " + cp_to)
+
+python do_prepare_recipe_sysroot_append_y2038arm () {
+    bb.note("32 bit ARM")
+    return do_prepare_recipe_sysroot_32bit_fix(d)
 }
 
+python do_prepare_recipe_sysroot_append_qemux86 () {
+    bb.note("32 bit x86")
+    return do_prepare_recipe_sysroot_32bit_fix(d)
+}
