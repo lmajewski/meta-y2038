@@ -26,6 +26,8 @@ V.   Building glibc with yocto SDK
 VI.  Build test glibc with x86, x86-64 and x32
 VII. GDB
 VIII.Runtime tests on MACHINE=qemux86
+IX.  Adjust y2038 setup to run new glibc with kernel older than 5.1
+
 
 I. Adding the meta-y2038 layer to your build
 =================================================
@@ -163,6 +165,46 @@ gcc -Wall -ggdb -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64 -I/opt/include -I/opt/usr
     -Wl,-rpath=/opt/lib -Wl,--dynamic-linker=/opt/lib/ld-linux.so.2 clock_settime_test.c -o cst -static
 
 Test it with gdb (also set debugging sources (with set directories /usr/src/debug/... - point VII)
+
+
+IX. Running different kernels with glibc supporting __clock_settime64, default (old)
+    kernel version and kernels supporting (5.1+) or not (4.19 lts) __clock_settime64.
+=====================================================================================
+
+In the meta-y2038/conf/distro/y2038.conf
+
+#Y2038_GLIBC_MIN_KERNEL_VERSION="5.1.0"
+and set
+
+PREFERRED_PROVIDER_virtual/kernel = "linux-lts"
+PREFERRED_VERSION_linux-lts = "4.19%"
+
+Rebuild kernel
+MACHINE=y2038arm bitbake linux-lts -c cleansstate && MACHINE=y2038arm bitbake linux-lts
+
+Go to build/tmp/deploy/images/y2038arm and copy/rename zImage--4.19*.bin and
+zImage--4.19*.dtb files
+
+
+Then set the
+
+PREFERRED_PROVIDER_virtual/kernel = "linux-y2038"
+PREFERRED_VERSION_linux-y2038 = "5.1%"
+
+in meta-y2038/conf/distro/y2038.conf
+
+and rebuild
+MACHINE=y2038arm bitbake y2038-image-devel
+
+
+The QEMU for MACHINE=y2038arm with 5.1 kernel:
+runqemu -d y2038arm nographic
+
+The QEMU for MACHINE=y2038arm with 4.19 kernel:
+KERNEL=/home/lukma/work/yocto/y2038/build/tmp/deploy/images/y2038arm/zImage--4.19.bin runqemu -d y2038arm nographic
+
+(and test y2038 with __clock_settime64 test program)
+
 
 Appendix I.
 ===========
