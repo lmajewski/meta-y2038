@@ -52,20 +52,17 @@ do_install () {
 	install -m 0644 ${S}/*.h ${D}${exec_prefix}/src/debug/${PN}/${PV}
 }
 
-do_prepare_recipe_sysroot_fix[doc] = "\
-sysroot adjustments necessary for building y2038 test application"
-
-do_prepare_recipe_sysroot_fix () {
+python do_prepare_recipe_sysroot_append () {
 # Copy toolchain files - like crtbeginS.o - to allow cross compilation
-	cp -a ${STAGING_DIR_HOST}${libdir}/${TARGET_SYS} \
-		${STAGING_DIR_HOST}${Y2038_GLIBC_DEPLOY_DIR}${libdir}
+    cp_from = d.getVar('STAGING_DIR_HOST') + d.getVar('libdir') + "/" + d.getVar('TARGET_SYS')
+    cp_to = d.getVar('STAGING_DIR_HOST') + d.getVar('Y2038_GLIBC_DEPLOY_DIR') + d.getVar('libdir')
+    os.system("cp -a " + cp_from + " " + cp_to)
 
 # Copy the libgcc* as suggested in:
 # https://sourceware.org/glibc/wiki/Testing/Builds
 # 'Building glibc with intent to install'
-	cp -a ${STAGING_DIR_HOST}${base_libdir}/libgcc* \
-		${STAGING_DIR_HOST}${Y2038_GLIBC_DEPLOY_DIR}${base_libdir}
+    cp_from = d.getVar('STAGING_DIR_HOST') + d.getVar('base_libdir') + "/libgcc*"
+    cp_to = d.getVar('STAGING_DIR_HOST') + d.getVar('Y2038_GLIBC_DEPLOY_DIR') + d.getVar('base_libdir')
+    os.system("cp -a " + cp_from + " " + cp_to)
 }
 
-addtask do_prepare_recipe_sysroot_fix before do_configure \
-	after do_prepare_recipe_sysroot
