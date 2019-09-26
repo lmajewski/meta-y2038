@@ -6,12 +6,12 @@ LIC_FILES_CHKSUM = "file://LICENSES;md5=cfc0ed77a9f62fa62eded042ebe31d72 \
 
 DEPENDS = "virtual/kernel bison-native"
 
-BRANCH = "Y2038-2.29-glibc-11-03-2019"
+BRANCH = "Y2038-2.29-glibc-warrior-01-08-2019"
 SRC_URI = "git://github.com/lmajewski/y2038_glibc.git;protocol=https;branch=${BRANCH}"
 
 # Modify these as desired
-PV = "2.30+git${SRCPV}"
-SRCREV = "c0f0d3aeacf01075dde674256f049aa0124842c7"
+PV = "2.29+git${SRCPV}"
+SRCREV = "57841b674d3fc007e31e7551a66963834cf096ac"
 
 S = "${WORKDIR}/git"
 B = "${WORKDIR}/build"
