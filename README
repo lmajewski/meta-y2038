@@ -25,7 +25,7 @@ IV.  Using glibc/src/scripts/cross-test-ssh.sh
 V.   Building glibc with yocto SDK
 VI.  Build test glibc with x86, x86-64 and x32
 VII. GDB
-VIII.Runtime tests on MACHINE=qemux86
+VIII.Runtime tests
 IX.  Adjust y2038 setup to run new glibc with kernel older than 5.1
 
 
@@ -127,8 +127,10 @@ gdb test_y2038
 (gdb) b test_clock_settime
 (gdb) run
 
-VIII. Runtime tests on MACHINE=qemux86
-======================================
+VIII. Runtime tests:
+====================
+
+- MACHINE=qemux86 + clock_settime
 
 MACHINE=qemux86 bitbake virtual/kernel -c cleansstate && MACHINE=qemux86 bitbake virtual/kernel
 MACHINE=qemux86 bitbake y2038-image-devel -c cleansstate && MACHINE=qemux86 bitbake y2038-image-devel
@@ -164,7 +166,48 @@ Build the test program:
 gcc -Wall -ggdb -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64 -I/opt/include -I/opt/usr/include -L/opt/usr/lib \
     -Wl,-rpath=/opt/lib -Wl,--dynamic-linker=/opt/lib/ld-linux.so.2 clock_settime_test.c -o cst -static
 
-Test it with gdb (also set debugging sources (with set directories /usr/src/debug/... - point VII)
+Test it with gdb (also set debugging sources (with set directories /usr/src/debug/... - point VII))
+
+- MACHINE=qemux86/qemux86-64 + clock_getres
+
+cat <<- EOF >> clock_getres_test.c
+#include <stdio.h>
+#include <time.h>
+
+int main (int argc, char **argv)
+{
+        struct timespec tv, *tvp = NULL;
+        int ret;
+
+        printf("clock_getres test program: ");
+        ret = clock_getres(CLOCK_REALTIME, tvp);
+        if (!ret)
+                printf("OK - tvp: %p\n", tvp);
+  else
+    printf("ERR\n");
+
+        tv.tv_sec = 0;
+        tv.tv_nsec = 0;
+
+        ret = clock_getres(CLOCK_REALTIME, &tv);
+        if (!ret) {
+                printf("OK");
+        } else
+                perror("ERR\n");
+
+        return 0;
+}
+EOF
+
+gcc -Wall -ggdb -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64 -I/opt/include -I/opt/usr/include -L/opt/usr/lib \
+    -Wl,-rpath=/opt/lib -Wl,--dynamic-linker=/opt/lib/ld-linux.so.2 clock_getres_test.c -o cgt -static
+
+
+To build the clock_getres test program on MACHINE=qemux86-64
+
+gcc -Wall -ggdb -I/opt/include -I/opt/usr/include -L/opt/usr/lib64 \
+ -Wl,-rpath=/opt/lib64 -Wl,--dynamic-linker=/opt/lib64/ld-linux-x86-64.so.2 \
+ clock_getres_test.c -o cgt -static
 
 
 IX. Running different kernels with glibc supporting __clock_settime64, default (old)
