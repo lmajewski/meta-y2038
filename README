@@ -27,6 +27,7 @@ VI.  Build test glibc with x86, x86-64 and x32
 VII. GDB
 VIII.Runtime tests
 IX.  Adjust y2038 setup to run new glibc with kernel older than 5.1
+X.   Develop y2038-tests with devtool and QEMU
 
 
 I. Adding the meta-y2038 layer to your build
@@ -247,6 +248,30 @@ The QEMU for MACHINE=y2038arm with 4.19 kernel:
 KERNEL=/home/lukma/work/yocto/y2038/build/tmp/deploy/images/y2038arm/zImage--4.19.bin runqemu -d y2038arm nographic
 
 (and test y2038 with __clock_settime64 test program)
+
+
+X.   Develop y2038-tests with devtool and QEMU (MACHINE=y2038arm)
+=================================================================
+
+1. Modify the y2038-tests sources:
+devtool modify y2038-tests
+
+devtool status
+NOTE: Starting bitbake server...
+y2038-tests: <...>/y2038/build/workspace/sources/y2038-tests
+
+2. Modify source code in the 'build/workspace/sources/y2038-tests' directory
+
+3. Build the test binaries (by using OE/Yocto recipe):
+devtool build y2038-tests
+
+4. Deploy it on the target (running under QEMU, started with 
+runqemu -d y2038arm nographic):
+
+devtool  deploy-target -s y2038-tests root@192.168.7.2
+
+5. On the taget run/debug tests:
+gdb test_y2038
 
 
 Appendix I.
