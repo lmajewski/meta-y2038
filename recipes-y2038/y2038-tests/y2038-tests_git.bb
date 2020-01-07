@@ -27,7 +27,8 @@ CFLAGS_append = " \
 CFLAGS_append = " -ggdb"
 
 LDFLAGS_append = "\
-	-Wl,-rpath=${Y2038_GLIBC_DEPLOY_DIR}${base_libdir}"
+	-Wl,-rpath=${Y2038_GLIBC_DEPLOY_DIR}${base_libdir} \
+	-Wl,--dynamic-linker=${Y2038_GLIBC_DEPLOY_DIR}${base_libdir}/ld-linux-armhf.so.3"
 
 LDFLAGS_append_y2038arm = "\
 	--sysroot=${STAGING_DIR_HOST}${Y2038_GLIBC_DEPLOY_DIR}"
@@ -40,9 +41,6 @@ LDFLAGS_append_qemux86-64 = "\
 	-Wl,-rpath=${Y2038_GLIBC_DEPLOY_DIR}/lib64 \
 	-L${STAGING_DIR_HOST}${Y2038_GLIBC_DEPLOY_DIR}/lib64/ \
 	-L${STAGING_DIR_HOST}${Y2038_GLIBC_DEPLOY_DIR}/usr/lib64/"
-
-# It is also possible to setup the dynamic linker path during build
-#-Wl,--dynamic-linker=${Y2038_GLIBC_DEPLOY_DIR}${base_libdir}/ld-linux-armhf.so.3
 
 do_compile () {
 	oe_runmake
