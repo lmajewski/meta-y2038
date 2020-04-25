@@ -8,7 +8,9 @@
 require kernel-common.inc
 
 BRANCH = "linux-5.1.y"
-SRC_URI = "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git;branch=${BRANCH}"
+SRC_URI = "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git;branch=${BRANCH} \
+           file://0001-ntp-y2038-Remove-incorrect-time_t-truncation.patch \
+           "
 
 LINUX_VERSION = "5.1.21"
 LINUX_VERSION_EXTENSION = "-y2038-${SRCREV}"
