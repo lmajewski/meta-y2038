@@ -101,6 +101,11 @@ make PARALLELMFLAGS="-j8"
 (For improved performance execute step [1] just before xcheck)
 make PARALLELMFLAGS="-j8" test-wrapper='/opt/Y2038/glibc/src/scripts/cross-test-ssh.sh root@192.168.7.2' xcheck
 
+Testing (rebuild) only a subset of tests (from e.g. time directory):
+--------------------------------------------------------------------
+find . -name "tst-clock_settime*" -delete
+make PARALLELMFLAGS="-j8" test-wrapper='./build/workspace/sources/y2038-glibc/scripts/cross-test-ssh.sh --allow-time-setting root@192.168.7.2' subdirs=time check
+
 V. Building glibc with yocto SDK
 ================================
 cd build/glibc
