@@ -103,8 +103,13 @@ make PARALLELMFLAGS="-j8" test-wrapper='/opt/Y2038/glibc/src/scripts/cross-test-
 
 Testing (rebuild) only a subset of tests (from e.g. time directory):
 --------------------------------------------------------------------
-find . -name "tst-clock_settime*" -delete
+find . -name "tst-clock_settime*" -delete   (or rm -rf ./time/*)
 make PARALLELMFLAGS="-j8" test-wrapper='./build/workspace/sources/y2038-glibc/scripts/cross-test-ssh.sh --allow-time-setting root@192.168.7.2' subdirs=time check
+
+Run test suite with date set to Y2038 threshold:
+------------------------------------------------
+On the VM run:
+date +'%Y-%m-%d %T' -s "2038-01-19 03:14:07"
 
 V. Building glibc with yocto SDK
 ================================
