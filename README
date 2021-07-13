@@ -27,7 +27,6 @@ VI.  Build test glibc with x86, x86-64 and x32
 VII. GDB
 VIII.Runtime tests
 IX.  Adjust y2038 setup to run new glibc with kernel older than 5.1
-X.   Develop y2038-tests with devtool and QEMU
 
 
 I. Adding the meta-y2038 layer to your build
@@ -38,37 +37,24 @@ Run 'bitbake-layers add-layer meta-y2038'
 II. Build setup
 ===============
 
+Please clone meta-y2038 layer to your PC.
+
 The KAS project [https://github.com/siemens/kas] shall be used to deploy the
-meta-y2038 with proper SHAs. Please use the "pasted" below meta-y2038-kas.yml
-file.
+meta-y2038 with proper SHAs. Please use meta-y2038-kas.yml file.
 
-or one can do it manually.
-
-Build Configuration:
-BB_VERSION           = "1.40.0"
-BUILD_SYS            = "x86_64-linux"
-NATIVELSBSTRING      = "universal"
-TARGET_SYS           = "arm-poky-linux-gnueabi"
-MACHINE              = "y2038arm"
-DISTRO               = "poky"
-DISTRO_VERSION       = "2.6.1"
-TUNE_FEATURES        = "arm armv7a vfp thumb neon callconvention-hard"
-TARGET_FPU           = "hard"
-meta
-meta-poky
-meta-yocto-bsp       = "thud:ee7dd3194411695e659c0c5cfbe2d938764dcc78"
-meta-oe
-meta-networking
-meta-python
-meta-filesystems
-meta-perl            = "thud:cca27b5ea7569d2730ee5da7ee7f47b39d775d89"
-
-(Please pay attention to thud:SHAs)
+Then run:
+../kas/run-kas checkout ./meta-y2038/meta-y2038-kas.yml
+. ./poky/oe-init-build-env
 
 III. Y2038 development
 ======================
 
-bitbake y2038-image-devel && runqemu -d y2038-image-devel
+bitbake y2038-image-devel
+runqemu -d y2038-image-devel nographic
+
+or
+
+MACHINE=qemux86 runqemu -d y2038-image-devel nographic
 
 Then from prompt:
 root@y2038arm:~# test_y2038
@@ -92,7 +78,7 @@ On HOST (x86_64):
 -----------------
 
 Setup yocto environment:
-$ . /opt/Y2038/2.6.1/environment-setup-armv7at2hf-neon-poky-linux-gnueabi
+$ . /opt/Y2038/3.x.y/environment-setup-armv7at2hf-neon-poky-linux-gnueabi
 
 cd /opt/Y2038/glibc/build
 ../src/configure --host="arm-poky-linux-gnueabi" --prefix=/usr
@@ -129,12 +115,6 @@ Session on test_y2038: __clock_settime64 (ARM)
 ==============================================
 
 gdb test_y2038
-
-(gdb) set directories /usr/src/debug/y2038-tests/1.0+git999:\
-	/opt/usr/src/debug/y2038-glibc/2.30+git999/sysdeps/unix/sysv/linux:\
-	/opt/usr/src/debug/y2038-glibc/2.30+git999/sysdeps/unix/sysv/linux/arm:\
-        /opt/usr/src/debug/y2038-glibc/2.30+git999/include
-
 (gdb) b test_clock_settime
 (gdb) run
 
@@ -174,52 +154,10 @@ int main (int argc, char **argv)
 EOF
 
 Build the test program:
-gcc -Wall -ggdb -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64 -I/opt/include -I/opt/usr/include -L/opt/usr/lib \
-    -Wl,-rpath=/opt/lib -Wl,--dynamic-linker=/opt/lib/ld-linux.so.2 clock_settime_test.c -o cst -static
+gcc -Wall -ggdb -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64 -I/usr/include -L/usr/lib \
+    clock_settime_test.c -o cst -static
 
 Test it with gdb (also set debugging sources (with set directories /usr/src/debug/... - point VII))
-
-- MACHINE=qemux86/qemux86-64 + clock_getres
-
-cat <<- EOF >> clock_getres_test.c
-#include <stdio.h>
-#include <time.h>
-
-int main (int argc, char **argv)
-{
-        struct timespec tv, *tvp = NULL;
-        int ret;
-
-        printf("clock_getres test program: ");
-        ret = clock_getres(CLOCK_REALTIME, tvp);
-        if (!ret)
-                printf("OK - tvp: %p\n", tvp);
-  else
-    printf("ERR\n");
-
-        tv.tv_sec = 0;
-        tv.tv_nsec = 0;
-
-        ret = clock_getres(CLOCK_REALTIME, &tv);
-        if (!ret) {
-                printf("OK");
-        } else
-                perror("ERR\n");
-
-        return 0;
-}
-EOF
-
-gcc -Wall -ggdb -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64 -I/opt/include -I/opt/usr/include -L/opt/usr/lib \
-    -Wl,-rpath=/opt/lib -Wl,--dynamic-linker=/opt/lib/ld-linux.so.2 clock_getres_test.c -o cgt -static
-
-
-To build the clock_getres test program on MACHINE=qemux86-64
-
-gcc -Wall -ggdb -I/opt/include -I/opt/usr/include -L/opt/usr/lib64 \
- -Wl,-rpath=/opt/lib64 -Wl,--dynamic-linker=/opt/lib64/ld-linux-x86-64.so.2 \
- clock_getres_test.c -o cgt -static
-
 
 IX. Running different kernels with glibc supporting __clock_settime64, default (old)
     kernel version and kernels supporting (5.1+) or not (4.19 lts) __clock_settime64.
@@ -227,7 +165,7 @@ IX. Running different kernels with glibc supporting __clock_settime64, default (
 
 In the meta-y2038/conf/distro/y2038.conf
 
-#Y2038_GLIBC_MIN_KERNEL_VERSION="5.1.0"
+#OLDEST_KERNEL="5.1.0"
 and set
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-lts"
@@ -258,66 +196,3 @@ The QEMU for MACHINE=y2038arm with 4.19 kernel:
 KERNEL=/home/lukma/work/yocto/y2038/build/tmp/deploy/images/y2038arm/zImage--4.19.bin runqemu -d y2038arm nographic
 
 (and test y2038 with __clock_settime64 test program)
-
-
-X.   Develop y2038-tests with devtool and QEMU (MACHINE=y2038arm)
-=================================================================
-
-1. Modify the y2038-tests sources:
-devtool modify y2038-tests
-
-devtool status
-NOTE: Starting bitbake server...
-y2038-tests: <...>/y2038/build/workspace/sources/y2038-tests
-
-2. Modify source code in the 'build/workspace/sources/y2038-tests' directory
-
-3. Build the test binaries (by using OE/Yocto recipe):
-devtool build y2038-tests
-
-4. Deploy it on the target (running under QEMU, started with 
-runqemu -d y2038arm nographic):
-
-devtool  deploy-target -s y2038-tests root@192.168.7.2
-
-5. On the taget run/debug tests:
-gdb test_y2038
-
-
-Appendix I.
-===========
-
-meta-y2038-kas.yml
-
------>8-------
-header:
-  version: 1
-
-machine: "y2038arm"
-
-distro: "y2038"
-target: "arm-poky-linux-gnueabi"
-repos:
-
-  poky:
-      url: "git://git.yoctoproject.org/poky.git"
-      refspec : ee7dd3194411695e659c0c5cfbe2d938764dcc78
-      layers:
-      meta:
-      meta-poky:
-      meta-yocto-bsp:
-
-  meta-openembedded:
-      url : "git://git.openembedded.org/meta-openembedded"
-      refspec : cca27b5ea7569d2730ee5da7ee7f47b39d775d89
-      layers:
-      meta-oe:
-      meta-networking:
-      meta-python:
-      meta-webserver:
-      meta-perl:
-
-  meta-y2038 :
-      url : "https://github.com/lmajewski/meta-y2038.git"
-      refspec : bd8cd0fc9d805a563ab7d73dbb0c274e878a7812
------8<-------

@@ -1,0 +1,36 @@
+From 1ef16a672502c169b3973af0cefb38241670d147 Mon Sep 17 00:00:00 2001
+From: Lukasz Majewski <lukma@denx.de>
+Date: Wed, 11 Sep 2019 10:53:37 +0200
+Subject: [PATCH] Y2038: zlib: Do not #undef _FILE_OFFSET_BITS for Y2038 aware
+ system
+
+The zlib un-defines internally the _FILE_OFFSET_BITS when _LARGEFILE64_SOURCE
+is defined.
+
+This seems like an overkill as _LARGEFILE{64}* defines are now obsolete
+and instead _FILE_OFFSET_BITS==64 is recommended for use.
+
+Problem is with Y2038 glibc - it export headers which require both:
+-D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64 defined for proper operation.
+
+This issue (concern) has been shared with zlib development community:
+https://github.com/madler/zlib/issues/447
+
+Signed-off-by: Lukasz Majewski <lukma@denx.de>
+---
+ gzguts.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/gzguts.h b/gzguts.h
+index 990a4d2..b8008e2 100644
+--- a/gzguts.h
++++ b/gzguts.h
+@@ -8,7 +8,7 @@
+ #    define _LARGEFILE_SOURCE 1
+ #  endif
+ #  ifdef _FILE_OFFSET_BITS
+-#    undef _FILE_OFFSET_BITS
++/*#    undef _FILE_OFFSET_BITS*/
+ #  endif
+ #endif
+ 

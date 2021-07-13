@@ -1,0 +1,39 @@
+header:
+  version: 8
+
+machine: "y2038arm"
+
+distro: "y2038"
+target: "y2038-image-devel"
+repos:
+  y2038:
+  poky:
+      url: "git://git.yoctoproject.org/poky.git"
+      refspec : 262d2c6b6c4f357a8ec083af0934dcbb3acd169c
+      layers:
+        meta:
+        meta-poky:
+        meta-yocto-bsp:
+
+  meta-openembedded:
+      url : "git://git.openembedded.org/meta-openembedded"
+      refspec : 0412a4befcd190cf020dd525aad31eba54b93a32
+      layers:
+        meta-oe:
+        meta-networking:
+        meta-python:
+        meta-filesystems:
+        meta-perl:
+
+local_conf_header:
+  meta-y2038: |
+    PACKAGE_CLASSES ?= "package_rpm"
+    EXTRA_IMAGE_FEATURES ?= "debug-tweaks tools-sdk tools-debug"
+    USER_CLASSES ?= "buildstats image-prelink"
+    PATCHRESOLVE = "noop"
+    BB_DISKMON_DIRS ??= "    STOPTASKS,,1G,100K     STOPTASKS,,1G,100K     STOPTASKS,,1G,100K     STOPTASKS,/tmp,100M,100K     ABORT,,100M,1K     ABORT,,100M,1K     ABORT,,100M,1K     ABORT,/tmp,10M,1K"
+    PACKAGECONFIG_append_pn-qemu-native = " sdl"
+    PACKAGECONFIG_append_pn-nativesdk-qemu = " sdl"
+    CONF_VERSION = "1"
+    DL_DIR ?= "/home/lukma/work/yocto/downloads"
+    SSTATE_DIR ?= "/home/lukma/work/yocto/sstate-cache-hardknott"
