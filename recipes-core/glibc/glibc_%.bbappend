@@ -16,8 +16,6 @@ SRC_URI_remove = "file://mte-backports.patch"
 RDEPENDS_ldd = "bash"
 RDEPENDS_tzcode = "bash"
 
-#EXTRA_OECONF_append = " --enable-kernel=${Y2038_GLIBC_MIN_KERNEL_VERSION}"
-
 # This revert would not be necessary as proper fix for it is going to be added
 # to gcc 11 and glibc:
 # https://sourceware.org/pipermail/libc-alpha/2021-July/128963.html
