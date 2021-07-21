@@ -13,5 +13,5 @@ TOOLCHAIN_HOST_TASK_append = " nativesdk-perl-module-locale"
 IMAGE_INSTALL += "packagegroup-y2038-devel"
 
 # Set the generated image size (for SD card) to be rounded
-# to 2 GiB (rootfs size with alignment to 1 GiB)
-IMAGE_ROOTFS_ALIGNMENT_y2038arm = "1048576"
+# to 4 GiB (rootfs size with alignment to 2 GiB)
+IMAGE_ROOTFS_ALIGNMENT_y2038arm = "2097152"
