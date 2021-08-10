@@ -14,7 +14,7 @@ IMAGE_INSTALL += " \
 # Provide extra 64 MiB
 IMAGE_ROOTFS_EXTRA_SPACE="1048576"
 
-DISTRO_FEATURES_DEFAULT_remove = "bluetooth \
+DISTRO_FEATURES_DEFAULT:remove = "bluetooth \
 				  irda pcmcia \
 				  usbhost \
 				  wifi \

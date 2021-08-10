@@ -12,10 +12,10 @@ S = "${WORKDIR}/git"
 # - build without GCC optimization (-O0)
 
 PARALLEL_MAKE = "-j 1"
-CC_remove = "-D_FORTIFY_SOURCE=2"
-CFLAGS_remove = "-O2"
-CFLAGS_append = " -ggdb"
-CFLAGS_append = " -O0"
+CC:remove = "-D_FORTIFY_SOURCE=2"
+CFLAGS:remove = "-O2"
+CFLAGS:append = " -ggdb"
+CFLAGS:append = " -O0"
 
 do_compile () {
 	oe_runmake
@@ -23,8 +23,8 @@ do_compile () {
 
 inherit autotools-brokensep package
 
-FILES_${PN} += "${bindir}"
-FILES_${PN}-dbg += "${exec_prefix}/src/debug"
+FILES:${PN} += "${bindir}"
+FILES:${PN}-dbg += "${exec_prefix}/src/debug"
 
 do_install () {
 	install -d ${D}${bindir}

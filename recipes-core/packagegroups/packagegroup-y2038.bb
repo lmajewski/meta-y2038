@@ -12,7 +12,7 @@ PACKAGES = "\
   packagegroup-y2038 packagegroup-y2038-devel \
 "
 
-RDEPENDS_${PN} = "\
+RDEPENDS:${PN} = "\
 	python3-pip \
 	python3-setuptools \
 	gawk \
@@ -20,14 +20,14 @@ RDEPENDS_${PN} = "\
 	zile \
 "
 
-RDEPENDS_${PN}-devel = "\
+RDEPENDS:${PN}-devel = "\
 	bison \
 	texinfo \
 	ntpdate \
 	iperf3 \
 	netcat \
 	y2038-tests-dbg \
-        git \
-        openssh-sftp-server \
-        sshfs-fuse \
+	git \
+	openssh-sftp-server \
+	sshfs-fuse \
 "

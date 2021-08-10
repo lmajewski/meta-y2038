@@ -9,7 +9,7 @@ repos:
   y2038:
   poky:
       url: "git://git.yoctoproject.org/poky.git"
-      refspec : 262d2c6b6c4f357a8ec083af0934dcbb3acd169c
+      refspec : 1e2e9a84d6dd81d7f6dd69c0d119d0149d10ade1
       layers:
         meta:
         meta-poky:
@@ -17,7 +17,7 @@ repos:
 
   meta-openembedded:
       url : "git://git.openembedded.org/meta-openembedded"
-      refspec : 0412a4befcd190cf020dd525aad31eba54b93a32
+      refspec : 3cf2475ea059184820525bb949c11c3da0e64af8
       layers:
         meta-oe:
         meta-networking:
@@ -32,8 +32,8 @@ local_conf_header:
     USER_CLASSES ?= "buildstats image-prelink"
     PATCHRESOLVE = "noop"
     BB_DISKMON_DIRS ??= "    STOPTASKS,,1G,100K     STOPTASKS,,1G,100K     STOPTASKS,,1G,100K     STOPTASKS,/tmp,100M,100K     ABORT,,100M,1K     ABORT,,100M,1K     ABORT,,100M,1K     ABORT,/tmp,10M,1K"
-    PACKAGECONFIG_append_pn-qemu-native = " sdl"
-    PACKAGECONFIG_append_pn-nativesdk-qemu = " sdl"
+    PACKAGECONFIG:append:pn-qemu-native = " sdl"
+    PACKAGECONFIG:append:pn-nativesdk-qemu = " sdl"
     CONF_VERSION = "1"
     DL_DIR ?= "/home/lukma/work/yocto/downloads"
     SSTATE_DIR ?= "/home/lukma/work/yocto/sstate-cache-hardknott"

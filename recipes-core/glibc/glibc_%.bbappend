@@ -1,23 +1,17 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-CFLAGS_remove = "-D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64"
-CPPFLAGS_remove = "-D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64"
-CXXFLAGS_remove = "-D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64"
+CFLAGS:remove = "-D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64"
+CPPFLAGS:remove = "-D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64"
+CXXFLAGS:remove = "-D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64"
 
 # GLIBC_GIT_URI = "git://sourceware.org/git/glibc.git"
-# GLIBC_GIT_URIgit@github.com:lmajewski/y2038_glibc.git
+# GLIBC_GIT_URI = "git@github.com:lmajewski/y2038_glibc.git"
 
 SRCBRANCH = "master"
-SRCREV_glibc = "8235f9311bddbe4cf8ff1fa8f72f41aa77e27e00"
+SRCREV_glibc = "c87fcacc50505d550f1bb038382bcc7ea73a5926"
 
-SRC_URI_remove = "file://0016-timezone-re-written-tzselect-as-posix-sh.patch"
-SRC_URI_remove = "file://mte-backports.patch"
+SRC_URI:remove = "file://0016-timezone-re-written-tzselect-as-posix-sh.patch"
+SRC_URI:remove = "file://mte-backports.patch"
 
-RDEPENDS_ldd = "bash"
-RDEPENDS_tzcode = "bash"
-
-# This revert would not be necessary as proper fix for it is going to be added
-# to gcc 11 and glibc:
-# https://sourceware.org/pipermail/libc-alpha/2021-July/128963.html
-SRC_URI_append = " \
-	file://0001-Revert-Define-PTHREAD_STACK_MIN-to-sysconf-_SC_THREA.patch"
+RDEPENDS:ldd = "bash"
+RDEPENDS:tzcode = "bash"
