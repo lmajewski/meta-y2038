@@ -30,4 +30,5 @@ RDEPENDS:${PN}-devel = "\
 	git \
 	openssh-sftp-server \
 	sshfs-fuse \
+	glibc-tests \
 "
