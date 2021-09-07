@@ -7,15 +7,16 @@
 
 require kernel-common.inc
 
-BRANCH = "linux-5.1.y"
+LIC_FILES_CHKSUM="file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
+
+BRANCH = "linux-5.10.y"
 SRC_URI = "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git;name=linux;branch=${BRANCH} \
-           file://0001-ntp-y2038-Remove-incorrect-time_t-truncation.patch \
            "
 
-LINUX_VERSION = "5.1.21"
+LINUX_VERSION = "5.10.62"
 LINUX_VERSION_EXTENSION = "-y2038-${SRCREV_linux}"
 
-SRCREV_linux = "4a9b1eb8bc3ba4ad8b3b1aa3317cf8d4a3aaad83"
+SRCREV_linux = "f6dd002450bf7b9143aff3af42ad1e12efe9a4f8"
 
-KMETA_BRANCH = "yocto-5.0"
-SRCREV_meta = "f0b575cda6d03540ff8da2f70421f13a08f34a5e"
+KMETA_BRANCH = "yocto-5.10"
+SRCREV_meta = "bce2813b162bb472c137fb503951295a931c25b6"
