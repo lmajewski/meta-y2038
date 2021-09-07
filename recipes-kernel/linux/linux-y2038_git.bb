@@ -20,3 +20,10 @@ SRCREV_linux = "f6dd002450bf7b9143aff3af42ad1e12efe9a4f8"
 
 KMETA_BRANCH = "yocto-5.10"
 SRCREV_meta = "bce2813b162bb472c137fb503951295a931c25b6"
+
+#
+# For MACHINE=beaglebone-yocto (5.10.y)
+#
+KBRANCH:beaglebone-yocto = "v5.10/standard/beaglebone"
+KMACHINE:beaglebone-yocto ?= "beaglebone"
+#SRCREV_machine:beaglebone-yocto ?= "a6df693a45f5787d4254e0998f52b4465b2a5efe"
