@@ -14,4 +14,4 @@ IMAGE_INSTALL += "packagegroup-y2038-devel"
 
 # Set the generated image size (for SD card) to be rounded
 # to 4 GiB (rootfs size with alignment to 2 GiB)
-IMAGE_ROOTFS_ALIGNMENT:y2038arm = "2097152"
+IMAGE_ROOTFS_ALIGNMENT:qemuarm = "2097152"

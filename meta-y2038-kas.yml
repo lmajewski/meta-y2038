@@ -1,7 +1,7 @@
 header:
   version: 8
 
-machine: "y2038arm"
+machine: "qemuarm"
 
 distro: "y2038"
 target: "y2038-image-devel"

@@ -10,8 +10,8 @@ KMETA = "kernel-meta"
 META_REPO = "git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=${KMETA_BRANCH};destsuffix=${KMETA}"
 SRC_URI:append = " ${META_REPO}"
 
-SRC_URI:append:y2038arm = " file://defconfig file://qemu_vexpress_tune.cfg"
-SRC_URI:append:y2038arm = " file://virtio.cfg file://printk.cfg"
+SRC_URI:append:qemuarm = " file://defconfig file://qemu_vexpress_tune.cfg"
+SRC_URI:append:qemuarm = " file://virtio.cfg file://printk.cfg"
 
 # Below features must be removed when we do not use kernel-yocto
 KERNEL_FEATURES:remove:qemuall="features/debug/printk.scc \
