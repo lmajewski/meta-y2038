@@ -29,6 +29,5 @@ RDEPENDS:${PN}-devel = "\
 	y2038-tests-dbg \
 	git \
 	openssh-sftp-server \
-	sshfs-fuse \
 	glibc-tests \
 "
