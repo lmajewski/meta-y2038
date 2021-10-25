@@ -29,7 +29,7 @@ local_conf_header:
   meta-y2038: |
     PACKAGE_CLASSES ?= "package_rpm"
     EXTRA_IMAGE_FEATURES ?= "debug-tweaks tools-sdk tools-debug ptest-pkgs"
-    USER_CLASSES ?= "buildstats image-prelink"
+    USER_CLASSES ?= "buildstats"
     PATCHRESOLVE = "noop"
     BB_DISKMON_DIRS ??= "    STOPTASKS,,1G,100K     STOPTASKS,,1G,100K     STOPTASKS,,1G,100K     STOPTASKS,/tmp,100M,100K     ABORT,,100M,1K     ABORT,,100M,1K     ABORT,,100M,1K     ABORT,/tmp,10M,1K"
     PACKAGECONFIG:append:pn-qemu-native = " sdl"
