@@ -59,13 +59,13 @@ MACHINE=qemux86 runqemu -d y2038-image-devel nographic
 Then from prompt:
 root@y2038arm:~# test_y2038
 
-Available MACHINES: y2038arm, qemux86, qemux86_64
+Available MACHINEs: qemuarm, qemux86, qemux86_64
 
 
 IV. Using glibc/src/scripts/cross-test-ssh.sh with QEMU
 =======================================================
 
-MACHINE=y2038arm   (32 bit ARM - Vexpress-A9)
+MACHINE=qemuarm   (32 bit ARM - Vexpress-A15)
 
 From Yocto/OE setup environment (on which bitbake operates)
 -----------------------------------------------------------
@@ -172,9 +172,9 @@ PREFERRED_PROVIDER_virtual/kernel = "linux-lts"
 PREFERRED_VERSION_linux-lts = "4.19%"
 
 Rebuild kernel
-MACHINE=y2038arm bitbake linux-lts -c cleansstate && MACHINE=y2038arm bitbake linux-lts
+MACHINE=qemuarm bitbake linux-lts -c cleansstate && MACHINE=qemuarm bitbake linux-lts
 
-Go to build/tmp/deploy/images/y2038arm and copy/rename zImage--4.19*.bin and
+Go to build/tmp/deploy/images/qemuarm and copy/rename zImage--4.19*.bin and
 zImage--4.19*.dtb files
 
 
@@ -186,13 +186,13 @@ PREFERRED_VERSION_linux-y2038 = "5.1%"
 in meta-y2038/conf/distro/y2038.conf
 
 and rebuild
-MACHINE=y2038arm bitbake y2038-image-devel
+MACHINE=qemuarm bitbake y2038-image-devel
 
 
-The QEMU for MACHINE=y2038arm with 5.1 kernel:
+The QEMU for MACHINE=qemuarm with 5.1 kernel:
 runqemu -d y2038arm nographic
 
-The QEMU for MACHINE=y2038arm with 4.19 kernel:
+The QEMU for MACHINE=qemuarm with 4.19 kernel:
 KERNEL=/home/lukma/work/yocto/y2038/build/tmp/deploy/images/y2038arm/zImage--4.19.bin runqemu -d y2038arm nographic
 
 (and test y2038 with __clock_settime64 test program)
