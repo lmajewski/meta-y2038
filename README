@@ -196,3 +196,27 @@ The QEMU for MACHINE=qemuarm with 4.19 kernel:
 KERNEL=/home/lukma/work/yocto/y2038/build/tmp/deploy/images/y2038arm/zImage--4.19.bin runqemu -d y2038arm nographic
 
 (and test y2038 with __clock_settime64 test program)
+
+
+IX. Runtime tests (ptest):
+==========================
+
+The `glibc-ptest` recipe package will provide _all_ time related
+tests to be run with ptest infrastructure.
+
+The `EXTRA_IMAGE_FEATURES` contains " ptest-pkgs", so all ptest
+tests and management programs are installed to the
+`y2038-image-devel`.
+
+Those 'glibc' tests are standalone, so they can be run without the
+data from glibc build tree.
+
+After booting into the QEMU run image, one just need to call
+`ptest-runner glibc-tests`
+
+and then adjust the time after Y2038 threshold:
+
+```
+date +'%Y-%m-%d %T' -s "2038-01-19 03:14:07"
+ptest-runner glibc-tests
+```
