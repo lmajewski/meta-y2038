@@ -12,6 +12,8 @@ SRCREV_glibc = "8b1a43e675ea2ba7615784241ecfcc9f2b5a0c4f"
 
 SRC_URI:remove = "file://0016-timezone-re-written-tzselect-as-posix-sh.patch"
 SRC_URI:remove = "file://mte-backports.patch"
+SRC_URI:remove = "file://0001-CVE-2021-38604.patch"
+SRC_URI:remove = "file://0002-CVE-2021-38604.patch"
 
 RDEPENDS:ldd = "bash"
 RDEPENDS:tzcode = "bash"
