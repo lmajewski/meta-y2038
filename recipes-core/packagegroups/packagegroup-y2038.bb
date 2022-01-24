@@ -26,7 +26,6 @@ RDEPENDS:${PN}-devel = "\
 	ntpdate \
 	iperf3 \
 	netcat \
-	y2038-tests-dbg \
 	git \
 	openssh-sftp-server \
 	glibc-tests \
